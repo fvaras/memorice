@@ -4,8 +4,15 @@
   "description": "Backend para app de memoria",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon api/index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Fernando Varas Castillo",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "lodash": "^4.17.20"
+  }
 }
