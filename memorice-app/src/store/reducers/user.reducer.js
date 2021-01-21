@@ -1,9 +1,9 @@
-import { SET_USER } from '../actions/user.actions'
+import { SET_USER, CLEAR_USER } from '../actions/user.actions'
 
-const initialState = {
-    name: 'Fernando'
-}
-// const initialState = null
+const initialState = null
+// const initialState = {
+//     name: 'Fernando'
+// }
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -12,6 +12,8 @@ export default (state = initialState, action) => {
                 ...state,
                 ...action.user
             }
+        case CLEAR_USER:
+            return null
         default: return state
     }
 }

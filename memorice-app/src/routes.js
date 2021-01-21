@@ -19,7 +19,7 @@ const Routes = () => (
             <Ranking />
         </Route>
         <Route path="/">
-            <Ranking />
+            <Login />
         </Route>
     </Switch>
 )

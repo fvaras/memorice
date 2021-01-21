@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { API_URL } from '../configs'
-import axios from 'axios'
+import axios from '../services/axios'
 import format from 'date-fns/format'
 
 const Ranking = () => {
@@ -12,7 +11,7 @@ const Ranking = () => {
     }, [])
 
     const getRanking = async () => {
-        const { data } = await axios.get(`${API_URL}/game/ranking`)
+        const { data } = await axios.get('/game/ranking')
         console.log(data)
         setRanking(data)
     }
@@ -39,6 +38,7 @@ const Ranking = () => {
     return (
         <div className="row">
             <div className="col-sm-12 col-md-6">
+                <h4>Best Tries</h4>
                 <table className="table table-striped table-borderless table-hover">
                     <thead>
                         <tr>
@@ -61,6 +61,7 @@ const Ranking = () => {
                 </table>
             </div>
             <div className="col-sm-12 col-md-6">
+                <h4>Best Times</h4>
                 <table className="table table-striped table-borderless table-hover">
                     <thead>
                         <tr>

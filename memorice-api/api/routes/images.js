@@ -1,5 +1,4 @@
 const express = require('express')
-const { random } = require('lodash')
 const router = express.Router()
 const _ = require('lodash')
 
@@ -19,7 +18,6 @@ const imagesList = [
 ]
 
 router.get('/', (req, res) => {
-    // const randomList = _.sampleSize(imagesList, 2)
     res.status(200).send(imagesList)
 })
 
