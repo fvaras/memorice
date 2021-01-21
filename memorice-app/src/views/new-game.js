@@ -5,6 +5,7 @@ import axios from 'axios'
 import _ from 'lodash'
 import GameCard from '../components/game-card'
 import format from 'date-fns/format'
+import { useHistory } from "react-router-dom";
 
 const NewGame = () => {
     const [tries, setTries] = useState(0)
@@ -12,10 +13,13 @@ const NewGame = () => {
     const [clearTry, setClearTry] = useState(false)
     const [startTime, setStartTime] = useState(null)
     const [elapsedTime, setElapsedTime] = useState(null);
+    const [completed, setCompleted] = useState(false)
     const timeoutDisplayImageRef = useRef(null);
     const timeoutTicksRef = useRef(null);
 
     const user = useSelector(state => state.user)
+
+    const history = useHistory();
 
     // This is from internet, St Google
     useEffect(() => {
@@ -64,7 +68,7 @@ const NewGame = () => {
     }, [elapsedTime]);
 
     const startNewGame = async () => {
-        endCurrentGame()
+        clearCurrentGame()
         const { data } = await axios.get(`${API_URL}/images`)
         setTable(createTable(data))
         setTries(0)
@@ -111,7 +115,7 @@ const NewGame = () => {
 
         const uncompleted = _table.filter(p => !p.completed).length
         if (uncompleted === 0)
-            endCurrentGame()
+            endGame()
 
         setTable(_table)
     }
@@ -132,9 +136,22 @@ const NewGame = () => {
     }
 
 
-    const endCurrentGame = () => {
+    const clearCurrentGame = async () => {
         clearTimeout(timeoutTicksRef.current);
         clearTimeout(timeoutDisplayImageRef.current);
+        setCompleted(false)
+    }
+
+    const endGame = async () => {
+        clearCurrentGame()
+        setCompleted(true)
+
+        const { data } = await axios.post(`${API_URL}/game`)
+        console.log(data)
+
+        setTimeout(() => {
+            history.push('/ranking')
+        }, 6000)
     }
 
     const formatTime = time => {
@@ -148,7 +165,7 @@ const NewGame = () => {
         <>
             <div className="d-flex justify-content-center">
                 <button type="button" className="btn btn-lg btn-success" onClick={startNewGame}>Start a new game</button>
-                <button type="button" className="btn btn-lg btn-success" onClick={endCurrentGame}>End game</button>
+                <button type="button" className="btn btn-lg btn-success" onClick={endGame}>End game</button>
             </div>
 
 
@@ -159,18 +176,24 @@ const NewGame = () => {
                 </div>
             ) : null} */}
 
-            {elapsedTime ? (
-                <div class="alert alert-primary mt-5" role="alert">
-                    <div class="d-flex justify-content-around">
+            {elapsedTime && !completed ? (
+                <div className="alert alert-primary mt-5" role="alert">
+                    <div className="d-flex justify-content-around">
                         <div>
-                            <span class="font-weight-bold mr-1">Tries:</span>
-                            <span class="font-weight-normal">{tries}</span>
+                            <span className="font-weight-bold mr-1">Tries:</span>
+                            <span className="font-weight-normal">{tries}</span>
                         </div>
                         <div>
-                            <span class="font-weight-bold mr-1">Elapsed Time:</span>
-                            <span class="font-weight-normal">{formatTime(elapsedTime)}</span>
+                            <span className="font-weight-bold mr-1">Elapsed Time:</span>
+                            <span className="font-weight-normal">{formatTime(elapsedTime)}</span>
                         </div>
                     </div>
+                </div>
+            ) : null}
+
+            {completed ? (
+                <div className="alert alert-success mt-5" role="alert">
+                    Congratulations! You have completed the game. Briefly you'll be redirected to ranking
                 </div>
             ) : null}
 
