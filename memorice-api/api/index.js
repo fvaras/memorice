@@ -16,15 +16,6 @@ app.use(bodyParser.json())
 
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 
-// const MongoClient = require('mongodb').MongoClient;
-// const client = new MongoClient(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-// client.connect(err => {
-//   const collection = client.db("memorice").collection("devices");
-//   console.log(collection.find())
-//   // perform actions on the collection object
-//   client.close();
-// });
-
 // routes middlewares
 app.use('/api/images', imagesRouter)
 app.use('/api/game', gameRouter)
