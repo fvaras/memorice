@@ -1,9 +1,9 @@
 import { SET_USER } from '../actions/user.actions'
 
-// const initialState = {
-//     name: 'Fernando'
-// }
-const initialState = null
+const initialState = {
+    name: 'Fernando'
+}
+// const initialState = null
 
 export default (state = initialState, action) => {
     switch (action.type) {

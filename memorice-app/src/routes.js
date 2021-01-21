@@ -4,7 +4,7 @@ import {
     Route
 } from "react-router-dom";
 import Login from './views/login'
-import NewGame from './views/game'
+import NewGame from './views/new-game'
 import Ranking from './views/ranking'
 
 const Routes = () => (
