@@ -44,7 +44,7 @@ const NewGame = () => {
         uncompletedVisibles.forEach(entry => {
             entry.visible = false
         });
-        setTable(() => _table)
+        setTable(_table)
     }
 
     // This is from internet, St Google
@@ -76,6 +76,12 @@ const NewGame = () => {
         setElapsedTime(0)
     }
 
+    const clearCurrentGame = async () => {
+        clearTimeout(timeoutTicksRef.current);
+        clearTimeout(timeoutDisplayImageRef.current);
+        setCompleted(false)
+    }
+
     const createTable = images => {
         let imageList = images.map(img => (
             {
@@ -92,6 +98,7 @@ const NewGame = () => {
     }
 
     const changeVisibility = id => {
+        console.log('tries', tries)
         const _table = [...table]
         const _entry = _table.filter(p => p.id === id)[0]
 
@@ -114,10 +121,11 @@ const NewGame = () => {
         }
 
         const uncompleted = _table.filter(p => !p.completed).length
-        if (uncompleted === 0)
-            endGame()
 
         setTable(_table)
+
+        if (uncompleted === 0)
+            endGame()
     }
 
     const canSwap = ({ id, completed }) => {
@@ -136,17 +144,17 @@ const NewGame = () => {
     }
 
 
-    const clearCurrentGame = async () => {
-        clearTimeout(timeoutTicksRef.current);
-        clearTimeout(timeoutDisplayImageRef.current);
-        setCompleted(false)
-    }
-
     const endGame = async () => {
         clearCurrentGame()
         setCompleted(true)
 
-        const { data } = await axios.post(`${API_URL}/game`)
+        const payload = {
+            user: user.name,
+            tries: tries + 1,
+            time: elapsedTime
+        }
+
+        const { data } = await axios.post(`${API_URL}/game`, payload)
         console.log(data)
 
         setTimeout(() => {
@@ -167,14 +175,6 @@ const NewGame = () => {
                 <button type="button" className="btn btn-lg btn-success" onClick={startNewGame}>Start a new game</button>
                 <button type="button" className="btn btn-lg btn-success" onClick={endGame}>End game</button>
             </div>
-
-
-            {/* {elapsedTime ? (
-                <div className="row mt-5">
-                    <h6>Tries: {tries}</h6>
-                    <h6>Elapsed Time: {formatTime(elapsedTime)}</h6>
-                </div>
-            ) : null} */}
 
             {elapsedTime && !completed ? (
                 <div className="alert alert-primary mt-5" role="alert">
@@ -199,7 +199,6 @@ const NewGame = () => {
 
             <div className="row mt-5">
                 {table.map(entry => (
-                    // <GameCard key={entry.id} entry={entry} onClick={() => changeVisibility(entry.id)} />
                     <GameCard key={entry.id} entry={entry} onClick={changeVisibility} />
                 ))}
             </div>

@@ -5,6 +5,7 @@ const GameCard = ({ entry, onClick }) => {
     const { id, url, visible, completed } = entry
 
     const canSwap = !completed && !visible
+    
     const handleClick = () => {
         if (canSwap)
             onClick(id)
