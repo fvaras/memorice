@@ -19,7 +19,7 @@ const imagesList = [
 ]
 
 router.get('/', (req, res) => {
-    const randomList = _.sampleSize(imagesList, 6)
+    const randomList = _.sampleSize(imagesList, 2)
     res.status(200).send(randomList)
 })
 
