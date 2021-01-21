@@ -29,8 +29,9 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
 app.use('/api/images', imagesRouter)
 app.use('/api/game', gameRouter)
 
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`)
-// })
+if (process.env.NODE_ENV === "development")
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+  })
 
 module.exports = app
