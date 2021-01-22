@@ -38,23 +38,21 @@ const Ranking = () => {
     return (
         <div className="row">
             <div className="col-sm-12 col-md-6">
-                <h4>Best Tries</h4>
+                <h4>Less Faults</h4>
                 <table className="table table-striped table-borderless table-hover">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">User</th>
-                            <th scope="col">Tries</th>
-                            {/* <th scope="col">Time</th> */}
+                            <th scope="col">Faults</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {ranking.bestTries.map((game, index) => (
+                        {ranking.lessFaults.map((game, index) => (
                             <tr key={index}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{game.user}</td>
-                                <td>{game.tries}</td>
-                                {/* <td>{game.time}</td> */}
+                                <td>{game.faults}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -68,7 +66,6 @@ const Ranking = () => {
                             <th scope="col">#</th>
                             <th scope="col">User</th>
                             <th scope="col">Time</th>
-                            {/* <th scope="col">Tries</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -77,7 +74,6 @@ const Ranking = () => {
                                 <th scope="row">{index + 1}</th>
                                 <td>{game.user}</td>
                                 <td>{formatTime(game.time)}</td>
-                                {/* <td>{game.tries}</td> */}
                             </tr>
                         ))}
                     </tbody>

@@ -5,7 +5,7 @@ import format from 'date-fns/format'
 
 const Game = ({ initialTable, ...props }) => {
     const [table, setTable] = useState([])
-    const [tries, setTries] = useState(0)
+    const [faults, setFaults] = useState(0)
     const [clearTry, setClearTry] = useState(false)
     const [startTime, setStartTime] = useState(null)
     const [elapsedTime, setElapsedTime] = useState(null);
@@ -28,7 +28,7 @@ const Game = ({ initialTable, ...props }) => {
     }
 
     const resetGameData = () => {
-        setTries(0)
+        setFaults(0)
         setStartTime(new Date())
         setElapsedTime(0)
     }
@@ -55,6 +55,7 @@ const Game = ({ initialTable, ...props }) => {
         const uncompletedVisibles = getUncompletedVisibles(_table)
         uncompletedVisibles.forEach(entry => {
             entry.visible = false
+            entry.hasError = false
         });
         setTable(_table)
     }
@@ -81,7 +82,7 @@ const Game = ({ initialTable, ...props }) => {
 
 
     const changeVisibility = id => {
-        console.log('tries', tries)
+        console.log('tries', faults)
         const _table = [...table]
         const _entry = _table.filter(p => p.id === id)[0]
 
@@ -93,14 +94,17 @@ const Game = ({ initialTable, ...props }) => {
         // const uncompletedVisibles = _table.filter(p => p.visible && !p.completed)
         const uncompletedVisibles = getUncompletedVisibles(_table)
         if (uncompletedVisibles.length === 2) {
-            setTries(prev => prev + 1)
             const isMatch = uncompletedVisibles[0].url === uncompletedVisibles[1].url
 
             uncompletedVisibles[0].completed = isMatch
             uncompletedVisibles[1].completed = isMatch
+            uncompletedVisibles[0].hasError = !isMatch
+            uncompletedVisibles[1].hasError = !isMatch
 
-            if (!isMatch)
+            if (!isMatch) {
                 setClearTry(true)
+                setFaults(prev => prev + 1)
+            }
         }
 
         const uncompleted = _table.filter(p => !p.completed).length
@@ -130,7 +134,7 @@ const Game = ({ initialTable, ...props }) => {
         clearTimeouts()
 
         props.endGame({
-            tries: tries + 1,
+            faults,
             time: elapsedTime
         })
     }
@@ -147,8 +151,8 @@ const Game = ({ initialTable, ...props }) => {
             <div className="alert alert-primary mt-5" role="alert">
                 <div className="d-flex justify-content-around">
                     <div>
-                        <span className="font-weight-bold mr-1">Tries:</span>
-                        <span className="font-weight-normal">{tries}</span>
+                        <span className="font-weight-bold mr-1">Faults:</span>
+                        <span className="font-weight-normal">{faults}</span>
                     </div>
                     <div>
                         <span className="font-weight-bold mr-1">Elapsed Time:</span>

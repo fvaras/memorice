@@ -35,7 +35,7 @@ const NewGame = () => {
     }
 
     const getRandomImages = collection => {
-        return _.sampleSize(collection, 2)
+        return _.sampleSize(collection, 6)
     }
 
     const createTable = images => {
@@ -43,7 +43,8 @@ const NewGame = () => {
             {
                 url: img,
                 visible: false,
-                completed: false
+                completed: false,
+                hasError: false
             }))
         imageList = imageList.concat(_.cloneDeep(imageList))
         imageList = _.shuffle(imageList)
@@ -53,13 +54,12 @@ const NewGame = () => {
         return imageList
     }
 
-    const endGame = async ({ tries, time }) => {
+    const endGame = async (payload) => {
         setCompleted(true)
 
         await axios.post('/game', {
+            ...payload,
             user: user.name,
-            tries,
-            time
         })
 
         setTimeout(() => {

@@ -2,10 +2,10 @@ import React from 'react'
 
 const GameCard = ({ entry, onClick }) => {
 
-    const { id, url, visible, completed } = entry
+    const { id, url, visible, completed, hasError } = entry
 
     const canSwap = !completed && !visible
-    
+
     const handleClick = () => {
         if (canSwap)
             onClick(id)
@@ -19,7 +19,7 @@ const GameCard = ({ entry, onClick }) => {
         >
             {visible ?
                 (
-                    <img className="rounded card-img-top img-thumbnail img-fluid h-100"
+                    <img className={['rounded card-img-top img-thumbnail img-fluid h-100', hasError ? 'card-error' : null].join(' ')}
                         src={url} alt=""
                     />
                 ) : (
