@@ -3,9 +3,9 @@ const router = express.Router()
 const Game = require('../models/game')
 
 router.get('/ranking', async (req, res) => {
-    const bestTries = await Game.find().sort('tries time').limit(10).exec()
-    const bestTimes = await Game.find().sort('time tries').limit(10).exec()
-    res.status(200).send({bestTries, bestTimes})
+    const lessFaults = await Game.find().sort('faults time').limit(10).exec()
+    const bestTimes = await Game.find().sort('time faults').limit(10).exec()
+    res.status(200).send({lessFaults, bestTimes})
 })
 
 router.get('/', async (req, res) => {

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const Game = mongoose.model('game', new Schema({
     user: String,
-    tries: Number,
+    faults: Number,
     time: Number
 }))
 
